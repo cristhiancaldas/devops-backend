@@ -94,7 +94,7 @@ pipeline {
             }
             steps {
                 dir('Backend') {
-                    withCredentials([string(credentialsId: 'GITHUB', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([gitUsernamePassword(credentialsId: 'GITHUB', variable: 'GITHUB_TOKEN')]) {
                         sh '''
                             git config user.email "c.caldas.m@gmail.com"
                             git config user.name "cristhiancaldas"
