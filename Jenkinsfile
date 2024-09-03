@@ -100,7 +100,7 @@ pipeline {
                             git config user.name "cristhiancaldas"
                             BUILD_NUMBER=${BUILD_NUMBER}
                             echo $BUILD_NUMBER
-                            imageTag=$(grep -oP '(?<=crist:)[^ ]+' deployment.yaml)
+                            imageTag=$(grep -oP '(?<=app-backend:)[^ ]+' deployment.yaml)
                             echo $imageTag
                             sed -i "s/${DOCKER_REPO}:${imageTag}/${DOCKER_REPO}:${BUILD_NUMBER}/" deployment.yaml
                             git add deployment.yaml
