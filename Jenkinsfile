@@ -5,7 +5,7 @@ pipeline {
         nodejs 'nodejs'
     }
    environment {
-        DOCKER_HUB_LOGIN = credentials('dockerHub')
+        DOCKER_HUB_LOGIN = credentials('docker-hub-token')
         IMAGE='app-backend'
         REGISTRY='crist'
         SCANNER_HOME = tool 'SonarQubeScanner'
@@ -32,8 +32,8 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube') {
                       sh ''' $SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectName=three-tier-banckend \
-                        -Dsonar.projectKey=three-tier-backend '''
+                        -Dsonar.projectName=app-banckend \
+                        -Dsonar.projectKey=app-backend '''
                 }
             }
         }
@@ -41,7 +41,7 @@ pipeline {
         stage('Quality Check') {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins' 
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
                 }
             }
         }
@@ -94,7 +94,7 @@ pipeline {
             }
             steps {
                 dir('Backend') {
-                    withCredentials([string(credentialsId: 'githubToken', variable: 'GITHUB_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
                         sh '''
                             git config user.email "c.caldas.m@gmail.com"
                             git config user.name "cristhiancaldas"
